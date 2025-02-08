@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const isValidUser = await loginUser(name);
     if (isValidUser) {
       setUser(name);
-      toast.success(`✅ Welcome, ${name}!`);
+      toast.success(`Welcome, ${name}!`);
       return true;
     }
     return false;
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    toast.info("👋 You have logged out.");
+    toast.info("You have logged out.");
   };
 
   return (

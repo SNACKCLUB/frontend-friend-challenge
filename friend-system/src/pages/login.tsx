@@ -11,16 +11,15 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!name.trim()) {
-      toast.warn("⚠️ Please enter a valid name!", { position: "top-center" });
+      toast.warn("Please enter a valid name!", { position: "top-center" });
       return;
     }
 
     const success = await login(name);
     if (success) {
-      toast.success("✅ Login successful!", { position: "top-center" });
       router.push("/friends");
     } else {
-      toast.error("❌ Invalid name. Please try again.", { position: "top-center" });
+      toast.error("Invalid name. Please try again.", { position: "top-center" });
     }
   };
 

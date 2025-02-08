@@ -10,16 +10,16 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (!name.trim()) {
-      toast.warn("⚠️ Please enter a valid name!", { position: "top-center" });
+      toast.warn("Please enter a valid name!", { position: "top-center" });
       return;
     }
 
     const success = await registerUser(name);
     if (success) {
-      toast.success("✅ Account created successfully! Redirecting to login...", { position: "top-center" });
+      toast.success("Account created successfully! Redirecting to login...", { position: "top-center" });
       setTimeout(() => router.push("/login"), 2000); // Aguarda 2s antes de redirecionar
     } else {
-      toast.error("❌ This name is already taken. Try another.", { position: "top-center" });
+      toast.error("This name is already taken. Try another.", { position: "top-center" });
     }
   };
 
