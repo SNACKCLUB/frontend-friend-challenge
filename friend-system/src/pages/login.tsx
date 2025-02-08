@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const { login } = useAuth();
+  const router = useRouter();
 
   const handleLogin = () => {
     if (username.trim()) {
       login(username);
+      router.push("/friends");
     }
   };
 
