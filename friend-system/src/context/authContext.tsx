@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from "react";
+import { toast } from "react-toastify";
 import { loginUser } from "../services/authService";
 
 interface AuthContextType {
@@ -16,12 +17,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const isValidUser = await loginUser(name);
     if (isValidUser) {
       setUser(name);
+      toast.success(`✅ Welcome, ${name}!`);
       return true;
     }
     return false;
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    toast.info("👋 You have logged out.");
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

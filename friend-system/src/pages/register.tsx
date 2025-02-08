@@ -1,24 +1,25 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { registerUser } from "../services/authService";
 
 const Register = () => {
   const [name, setName] = useState("");
-  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleRegister = async () => {
     if (!name.trim()) {
-      setError("⚠️ Please enter a valid name.");
+      toast.warn("⚠️ Please enter a valid name!", { position: "top-center" });
       return;
     }
 
     const success = await registerUser(name);
     if (success) {
-      alert("✅ Account created successfully! Please log in.");
-      router.push("/login");
+      toast.success("✅ Account created successfully! Redirecting to login...", { position: "top-center" });
+      setTimeout(() => router.push("/login"), 2000); // Aguarda 2s antes de redirecionar
     } else {
-      setError("❌ This name is already taken. Try another.");
+      toast.error("❌ This name is already taken. Try another.", { position: "top-center" });
     }
   };
 
@@ -32,14 +33,10 @@ const Register = () => {
           type="text"
           placeholder="Enter your name"
           value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            setError("");
-          }}
+          onChange={(e) => setName(e.target.value)}
           className="w-full p-3 rounded-full bg-[#240046] text-white placeholder-gray-400 text-lg outline-none border-2 border-[#7D00FF] focus:border-[#D600FF] transition-all"
         />
       </div>
-      {error && <p className="text-red-400 mt-2">{error}</p>}
       <button
         onClick={handleRegister}
         className="mt-6 w-full max-w-md px-8 py-3 text-lg font-bold uppercase rounded-full bg-gradient-to-r from-[#00FF7F] to-[#00D6FF] hover:brightness-125 transition-all shadow-md"

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {
@@ -9,15 +11,16 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!name.trim()) {
-      alert("⚠️ Please enter a valid name!");
+      toast.warn("⚠️ Please enter a valid name!", { position: "top-center" });
       return;
     }
 
     const success = await login(name);
     if (success) {
+      toast.success("✅ Login successful!", { position: "top-center" });
       router.push("/friends");
     } else {
-      alert("❌ Invalid name. Please try again.");
+      toast.error("❌ Invalid name. Please try again.", { position: "top-center" });
     }
   };
 
