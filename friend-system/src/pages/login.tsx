@@ -3,15 +3,26 @@ import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleLogin = () => {
-    if (username.trim()) {
-      login(username);
-      router.push("/friends");
+  const handleLogin = async () => {
+    if (!name.trim()) {
+      alert("⚠️ Please enter a valid name!");
+      return;
     }
+
+    const success = await login(name);
+    if (success) {
+      router.push("/friends");
+    } else {
+      alert("❌ Invalid name. Please try again.");
+    }
+  };
+
+  const handleRegisterRedirect = () => {
+    router.push("/register");
   };
 
   return (
@@ -23,8 +34,8 @@ const Login = () => {
         <input
           type="text"
           placeholder="Enter your name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="w-full p-3 rounded-full bg-[#240046] text-white placeholder-gray-400 text-lg outline-none border-2 border-[#7D00FF] focus:border-[#D600FF] transition-all"
         />
       </div>
@@ -33,6 +44,12 @@ const Login = () => {
         className="mt-6 w-full max-w-md px-8 py-3 text-lg font-bold uppercase rounded-full bg-gradient-to-r from-[#7D00FF] to-[#D600FF] hover:brightness-125 transition-all shadow-md"
       >
         Login
+      </button>
+      <button
+        onClick={handleRegisterRedirect}
+        className="mt-3 w-full max-w-md px-8 py-3 text-lg font-bold uppercase rounded-full bg-gradient-to-r from-[#00FF7F] to-[#00D6FF] hover:brightness-125 transition-all shadow-md"
+      >
+        Create Account
       </button>
     </div>
   );
