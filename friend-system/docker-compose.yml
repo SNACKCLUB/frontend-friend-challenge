@@ -5,14 +5,5 @@ services:
     build: .
     ports:
       - "3000:3000"
-    depends_on:
-      - api
     environment:
       - NODE_ENV=development
-
-  api:
-    build: ./src/mock-api
-    ports:
-      - "5001:5001"
-    volumes:
-      - ./src/mock-api/db.json:/api/db.json
