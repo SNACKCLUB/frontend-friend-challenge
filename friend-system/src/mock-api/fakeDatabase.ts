@@ -1,8 +1,4 @@
-interface User {
-  id: number;
-  name: string;
-  friends: string[];
-}
+import { User } from "../types";
 
 let users: User[] = [
   { id: 1, name: "Carlos", friends: ["Eduardo", "Luisa"] },
