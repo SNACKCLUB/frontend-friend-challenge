@@ -37,25 +37,30 @@ const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) =>
       <nav className="w-full flex flex-col items-center gap-4">
         <Button
           variant={activeTab === "friends" ? "primary" : "sidebar"}
-          onClick={() => setActiveTab("friends")}
+          onClick={() => {
+            setActiveTab("friends");
+            setIsSidebarOpen(false);
+          }}
         >
           Friends
         </Button>
+
         <Button
           variant={activeTab === "requests" ? "primary" : "sidebar"}
-          onClick={() => setActiveTab("requests")}
-          className="relative"
+          onClick={() => {
+            setActiveTab("requests");
+            setIsSidebarOpen(false);
+          }}
         >
           Requests
-          {pendingRequests > 0 && (
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-              {pendingRequests}
-            </span>
-          )}
         </Button>
+
         <Button
           variant={activeTab === "explore" ? "primary" : "sidebar"}
-          onClick={() => setActiveTab("explore")}
+          onClick={() => {
+            setActiveTab("explore");
+            setIsSidebarOpen(false);
+          }}
         >
           Explore
         </Button>

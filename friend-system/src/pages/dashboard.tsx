@@ -17,11 +17,11 @@ const Dashboard = () => {
       </aside>
 
       <Button
-        className="md:hidden fixed top-4 left-4 z-50 p-3"
+        className="md:hidden fixed top-4 left-4 z-50 w-12 h-12 flex items-center justify-center bg-[#7D00FF] text-white rounded-md shadow-lg"
         variant="primary"
         onClick={() => setIsSidebarOpen(true)}
       >
-        <FiMenu size={24} />
+        <FiMenu size={22} />
       </Button>
 
       {isSidebarOpen && (
