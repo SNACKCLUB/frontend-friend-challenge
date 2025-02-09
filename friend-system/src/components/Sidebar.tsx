@@ -1,5 +1,7 @@
+import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 import { fakeDB } from "../mock-api/fakeDatabase";
+import Button from "./Button";
 
 interface SidebarProps {
   activeTab: "friends" | "requests" | "explore";
@@ -7,8 +9,16 @@ interface SidebarProps {
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
-  const { user } = useAuth();
+const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) => {
+  const { user, logout, pendingRequests } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    setIsSidebarOpen(false);
+    router.push("/login");
+  };
+
   const loggedUser = user ? fakeDB.findUser(user) : null;
 
   return (
@@ -25,31 +35,37 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
       )}
 
       <nav className="w-full flex flex-col items-center gap-4">
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "friends" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
+        <Button
+          variant={activeTab === "friends" ? "primary" : "sidebar"}
           onClick={() => setActiveTab("friends")}
         >
           Friends
-        </button>
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "requests" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
+        </Button>
+        <Button
+          variant={activeTab === "requests" ? "primary" : "sidebar"}
           onClick={() => setActiveTab("requests")}
+          className="relative"
         >
           Requests
-        </button>
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "explore" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
+          {pendingRequests > 0 && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              {pendingRequests}
+            </span>
+          )}
+        </Button>
+        <Button
+          variant={activeTab === "explore" ? "primary" : "sidebar"}
           onClick={() => setActiveTab("explore")}
         >
           Explore
-        </button>
+        </Button>
       </nav>
+
+      <div className="mt-auto w-full flex justify-center pb-6">
+        <Button variant="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     </aside>
   );
 };
