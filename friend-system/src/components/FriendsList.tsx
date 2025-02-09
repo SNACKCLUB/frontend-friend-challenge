@@ -1,40 +1,35 @@
 import useFriends from "../hooks/useFriends";
+import FriendCard from "./FriendCard";
 
 const FriendsList = () => {
-  const { friends, loading, error } = useFriends();
+  const { friends, loading, removeFriend } = useFriends();
 
   return (
-    <section className="flex flex-col items-center justify-center h-screen text-white">
-      <h1 className="text-4xl font-extrabold tracking-wide mb-6 text-[#D6AFFF]">
+    <div className="p-6 flex flex-col items-center">
+      <h1 className="text-3xl font-bold text-center text-[#D6B4FC] mb-6">
         FRIENDS LIST
       </h1>
 
-      {error && (
-        <div className="bg-red-500/80 text-white p-3 rounded-lg mb-4 w-72 text-center shadow-md">
-          ⚠️ {error}
-        </div>
-      )}
-
       {loading ? (
-        <p className="text-gray-400 text-lg">Loading friends...</p>
+        <p className="text-gray-300 text-center">Loading friends...</p>
       ) : friends.length === 0 ? (
-        <div className="flex flex-col items-center">
-          <p className="text-gray-300 text-lg">You don't have any friends yet.</p>
-          <p className="text-[#D6AFFF] text-md mt-2">Start adding new friends in the Explore tab!</p>
-        </div>
+        <p className="text-gray-400 text-center">
+          You don’t have any friends yet. <br />
+          Start adding new friends in the Explore tab!
+        </p>
       ) : (
-        <ul className="space-y-3">
-          {friends.map((friend, index) => (
-            <li
-              key={index}
-              className="bg-[#2D0A40] p-3 rounded-lg w-64 text-center shadow-lg text-lg font-semibold"
-            >
-              {friend.name}
-            </li>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
+          {friends.map((friend) => (
+            <FriendCard
+              key={friend.id}
+              friend={friend}
+              isFriend={true}
+              onAction={() => removeFriend(friend.id)}
+            />
           ))}
-        </ul>
+        </div>
       )}
-    </section>
+    </div>
   );
 };
 

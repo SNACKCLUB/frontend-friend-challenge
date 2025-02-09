@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
 import { Friend } from "../types";
+import { fakeDB } from "../mock-api/fakeDatabase";
 
 const useFriends = () => {
   const { user } = useAuth();
@@ -11,25 +12,52 @@ const useFriends = () => {
   useEffect(() => {
     if (!user) return;
 
-    const fetchFriends = async () => {
+    const fetchFriends = () => {
       try {
-        const response = await fetch(`http://localhost:5001/users?name=${user}`);
-        if (!response.ok) throw new Error("Failed to fetch friends");
-        
-        const data = await response.json();
-
-        setFriends(data.length > 0 && data[0].friends ? data[0].friends : []);
+        const foundUser = fakeDB.findUser(user);
+        if (!foundUser) throw new Error("User not found");
+    
+        const friendList = foundUser.friends
+          .map(friendName => fakeDB.findUser(friendName))
+          .filter(Boolean)
+          .map(friend => ({
+            ...friend!,
+            avatar: friend!.avatar
+          })) as Friend[];
+    
+        setFriends(friendList);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }
-    };
+    };    
 
     fetchFriends();
   }, [user]);
 
-  return { friends, loading, error };
+  const removeFriend = (friendId: number) => {
+    if (!user) return;
+  
+    const success = fakeDB.removeFriend(user, friendId);
+    
+    if (success) {
+      const foundUser = fakeDB.findUser(user);
+      if (foundUser) {
+        const updatedFriends = foundUser.friends
+          .map(friendName => fakeDB.findUser(friendName))
+          .filter(Boolean)
+          .map(friend => ({
+            ...friend!,
+            avatar: friend!.avatar
+          })) as Friend[];
+  
+        setFriends(updatedFriends);
+      }
+    }
+  };  
+
+  return { friends, loading, error, removeFriend };
 };
 
 export default useFriends;
