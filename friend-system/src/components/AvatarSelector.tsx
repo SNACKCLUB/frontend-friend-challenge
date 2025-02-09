@@ -1,3 +1,5 @@
+import React from "react";
+
 interface AvatarSelectorProps {
   avatars: string[];
   selectedAvatar: string;

@@ -1,3 +1,4 @@
+import React from "react";
 import useFriendRequests from "../hooks/useFriendRequests";
 import FriendCard from "./FriendCard";
 

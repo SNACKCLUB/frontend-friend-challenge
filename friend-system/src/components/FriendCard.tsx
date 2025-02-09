@@ -1,3 +1,4 @@
+import React from "react";
 import { Friend } from "../types";
 import Button from "./Button";
 

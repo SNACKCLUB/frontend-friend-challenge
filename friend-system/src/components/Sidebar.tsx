@@ -1,3 +1,4 @@
+import React from "react";
 import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 import { fakeDB } from "../mock-api/fakeDatabase";
