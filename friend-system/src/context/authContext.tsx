@@ -16,8 +16,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const currentUser = fakeDB.findUser(user);
+    
     setPendingRequests(currentUser ? currentUser.friendRequests.length : 0);
-  };
+  };  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     updatePendingRequests();
   }, [user]);
+  
 
   const login = async (name: string): Promise<boolean> => {
     const response = await loginUser(name);

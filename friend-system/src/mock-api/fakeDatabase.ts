@@ -62,29 +62,25 @@ export const fakeDB = {
 
   getAvatars: () => avatars,
 
-  sendFriendRequest: (from: string, to: string, updatePendingRequests: () => void) => {
+  sendFriendRequest: (from: string, to: string, updatePendingRequests?: () => void) => {
     const sender = fakeDB.findUser(from);
     const receiver = fakeDB.findUser(to);
   
     if (!sender || !receiver) return false;
   
-    if (!receiver.friendRequests) {
-      receiver.friendRequests = [];
+    if (!receiver.friendRequests.includes(from)) {
+      receiver.friendRequests.push(from);
+      
+      if (typeof window !== "undefined") {
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+  
+      if (updatePendingRequests) updatePendingRequests();
+      
+      return true;
     }
   
-    if (receiver.friendRequests.includes(from)) return false;
-  
-    receiver.friendRequests.push(from);
-  
-    if (typeof window !== "undefined") {
-      localStorage.setItem("users", JSON.stringify(users));
-    }
-  
-    if (typeof updatePendingRequests === "function") {
-      updatePendingRequests();
-    }
-  
-    return true;
+    return false;
   },  
 
   getFriendRequests: (userName: string) => {

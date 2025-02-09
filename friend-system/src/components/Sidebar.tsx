@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 import { fakeDB } from "../mock-api/fakeDatabase";
 import Button from "./Button";
+import Badge from "./Badge";
 
 interface SidebarProps {
   activeTab: "friends" | "requests" | "explore";
@@ -10,7 +11,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) => {
-  const { user, logout, pendingRequests } = useAuth();
+  const { user, logout, pendingRequests, updatePendingRequests } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -50,9 +51,12 @@ const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) =>
           onClick={() => {
             setActiveTab("requests");
             setIsSidebarOpen(false);
+            updatePendingRequests();
           }}
+          className="relative"
         >
           Requests
+          {pendingRequests > 0 && <Badge count={pendingRequests} />}
         </Button>
 
         <Button
