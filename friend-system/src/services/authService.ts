@@ -22,6 +22,6 @@ export const loginUser = async (name: string): Promise<{ success: boolean; token
  * @param name - The name to register.
  * @returns {Promise<boolean>} - Returns true if registration is successful, false otherwise.
  */
-export const registerUser = async (name: string): Promise<boolean> => {
-  return fakeDB.addUser(name);
+export const registerUser = async (name: string, avatar: string): Promise<boolean> => {
+  return fakeDB.addUser(name, avatar);
 };

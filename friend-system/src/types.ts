@@ -2,11 +2,13 @@ export interface User {
   id: number;
   name: string;
   friends: string[];
+  avatar: string;
 }
 
 export interface Friend {
   id: number;
   name: string;
+  avatar: string;
 }
 
 export interface AuthContextType {
