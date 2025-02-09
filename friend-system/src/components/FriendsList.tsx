@@ -24,6 +24,7 @@ const FriendsList = () => {
               key={friend.id}
               friend={friend}
               isFriend={true}
+              actionType="friend"
               onAction={() => removeFriend(friend.id)}
             />
           ))}

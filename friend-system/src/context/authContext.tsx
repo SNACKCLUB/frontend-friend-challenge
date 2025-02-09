@@ -1,12 +1,24 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { loginUser } from "../services/authService";
 import { AuthContextType } from "../types";
+import { fakeDB } from "../mock-api/fakeDatabase";
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [pendingRequests, setPendingRequests] = useState<number>(0);
+
+  const updatePendingRequests = () => {
+    if (!user) {
+      setPendingRequests(0);
+      return;
+    }
+    const currentUser = fakeDB.findUser(user);
+    
+    setPendingRequests(currentUser ? currentUser.friendRequests.length : 0);
+  };  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -18,6 +30,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    updatePendingRequests();
+  }, [user]);
+  
+
   const login = async (name: string): Promise<boolean> => {
     const response = await loginUser(name);
     if (response.success && response.token) {
@@ -25,6 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setToken(response.token);
       localStorage.setItem("user", name);
       localStorage.setItem("token", response.token);
+      updatePendingRequests();
       return true;
     }
     return false;
@@ -33,12 +51,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
+    setPendingRequests(0);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, pendingRequests, updatePendingRequests }}>
       {children}
     </AuthContext.Provider>
   );

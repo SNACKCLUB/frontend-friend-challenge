@@ -11,7 +11,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!name.trim()) {
-      toast.warn("⚠️ Please enter a valid name!");
+      toast.warn("Please enter a valid name!");
       return;
     }
 

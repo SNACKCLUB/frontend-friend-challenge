@@ -1,13 +1,25 @@
+import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 import { fakeDB } from "../mock-api/fakeDatabase";
+import Button from "./Button";
+import Badge from "./Badge";
 
 interface SidebarProps {
   activeTab: "friends" | "requests" | "explore";
   setActiveTab: (tab: "friends" | "requests" | "explore") => void;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
-  const { user } = useAuth();
+const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) => {
+  const { user, logout, pendingRequests, updatePendingRequests } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    setIsSidebarOpen(false);
+    router.push("/login");
+  };
+
   const loggedUser = user ? fakeDB.findUser(user) : null;
 
   return (
@@ -24,31 +36,45 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
       )}
 
       <nav className="w-full flex flex-col items-center gap-4">
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "friends" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
-          onClick={() => setActiveTab("friends")}
+        <Button
+          variant={activeTab === "friends" ? "primary" : "sidebar"}
+          onClick={() => {
+            setActiveTab("friends");
+            setIsSidebarOpen(false);
+          }}
         >
           Friends
-        </button>
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "requests" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
-          onClick={() => setActiveTab("requests")}
+        </Button>
+
+        <Button
+          variant={activeTab === "requests" ? "primary" : "sidebar"}
+          onClick={() => {
+            setActiveTab("requests");
+            setIsSidebarOpen(false);
+            updatePendingRequests();
+          }}
+          className="relative"
         >
           Requests
-        </button>
-        <button
-          className={`w-5/6 py-3 rounded-lg text-lg font-semibold transition ${
-            activeTab === "explore" ? "bg-[#7D00FF] text-white" : "bg-[#240046] text-gray-300 hover:bg-[#350065]"
-          }`}
-          onClick={() => setActiveTab("explore")}
+          {pendingRequests > 0 && <Badge count={pendingRequests} />}
+        </Button>
+
+        <Button
+          variant={activeTab === "explore" ? "primary" : "sidebar"}
+          onClick={() => {
+            setActiveTab("explore");
+            setIsSidebarOpen(false);
+          }}
         >
           Explore
-        </button>
+        </Button>
       </nav>
+
+      <div className="mt-auto w-full flex justify-center pb-6">
+        <Button variant="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     </aside>
   );
 };

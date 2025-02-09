@@ -3,6 +3,7 @@ export interface User {
   name: string;
   friends: string[];
   avatar: string;
+  friendRequests: string[];
 }
 
 export interface Friend {
@@ -16,6 +17,8 @@ export interface AuthContextType {
   token: string | null;
   login: (name: string) => Promise<boolean>;
   logout: () => void;
+  pendingRequests: number;
+  updatePendingRequests: () => void;
 }
 
 export interface SidebarProps {
