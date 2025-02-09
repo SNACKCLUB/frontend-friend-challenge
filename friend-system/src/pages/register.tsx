@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { registerUser } from "../services/authService";
+import { toast } from "react-toastify";
 import Button from "../components/Button";
 
 const Register = () => {
@@ -10,21 +11,21 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (!name.trim()) {
-      setError("⚠️ Please enter a valid name.");
+      toast.warn("Please enter a valid name.");
       return;
     }
-
+  
     const success = await registerUser(name);
     if (success) {
-      alert("✅ Account created successfully! Please log in.");
+      toast.success("Account created successfully! Please log in.");
       router.push("/login");
     } else {
-      setError("❌ This name is already taken. Try another.");
+      toast.error("This name is already taken. Try another.");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#1A0033] to-[#0D001A] text-white px-6">
+    <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#1A0033] to-[#0D001A] text-white px-6">
       <h1 className="text-3xl md:text-4xl font-extrabold mb-6 tracking-wider text-center">CREATE ACCOUNT</h1>
       <div className="relative w-full max-w-md">
         <input
@@ -39,13 +40,22 @@ const Register = () => {
         />
       </div>
       {error && <p className="text-red-400 mt-2">{error}</p>}
-      <Button onClick={handleRegister} className="mt-6 w-full max-w-md">
+      <Button
+        variant="primary"
+        onClick={handleRegister}
+        className="mt-6 w-full max-w-md px-8 py-3"
+      >
         Register
       </Button>
-      <Button onClick={() => router.push("/login")} variant="secondary" className="mt-3 w-full max-w-md">
+
+      <Button
+        onClick={() => router.push("/login")}
+        variant="secondary"
+        className="mt-3 w-full max-w-md px-8 py-3"
+      >
         Back to Login
       </Button>
-    </div>
+    </section>
   );
 };
 
