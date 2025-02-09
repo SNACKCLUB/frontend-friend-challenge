@@ -1,6 +1,6 @@
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import AvatarSelector from "../AvatarSelector";
-import React from "react";
 
 describe("AvatarSelector Component", () => {
   const avatars = ["/images/1.png", "/images/2.png", "/images/3.png"];
@@ -28,13 +28,14 @@ describe("AvatarSelector Component", () => {
         setSelectedAvatar={setSelectedAvatar}
       />
     );
-
+  
+    const images = screen.getAllByAltText("User Avatar");
+  
     avatars.forEach((avatar, index) => {
-      const img = screen.getByAltText(`Avatar ${index + 1}`);
-      expect(img).toBeInTheDocument();
-      expect(img).toHaveAttribute("src", avatar);
+      expect(images[index]).toBeInTheDocument();
+      expect(images[index]).toHaveAttribute("src", avatar);
     });
-  });
+  });  
 
   it("Should call setSelectedAvatar when clicking on an avatar", () => {
     render(
@@ -44,12 +45,12 @@ describe("AvatarSelector Component", () => {
         setSelectedAvatar={setSelectedAvatar}
       />
     );
-
-    const avatarToSelect = screen.getByAltText("Avatar 2");
-    fireEvent.click(avatarToSelect);
-
+  
+    const avatarButtons = screen.getAllByRole("button");
+    fireEvent.click(avatarButtons[1]);
+  
     expect(setSelectedAvatar).toHaveBeenCalledWith(avatars[1]);
-  });
+  });  
 
   it("Should apply correct styles to the selected avatar", () => {
     render(
@@ -59,10 +60,10 @@ describe("AvatarSelector Component", () => {
         setSelectedAvatar={setSelectedAvatar}
       />
     );
-
-    const selectedImg = screen.getByAltText("Avatar 2");
-    expect(selectedImg).toHaveClass("border-[#7D00FF] scale-110 shadow-lg");
-  });
+  
+    const avatarButtons = screen.getAllByRole("button");
+    expect(avatarButtons[1]).toHaveClass("border-[#7D00FF] scale-110 shadow-lg");
+  });  
 
   it("Should apply hover effect to unselected avatars", () => {
     render(
@@ -72,8 +73,8 @@ describe("AvatarSelector Component", () => {
         setSelectedAvatar={setSelectedAvatar}
       />
     );
-
-    const unselectedImg = screen.getByAltText("Avatar 1");
-    expect(unselectedImg).toHaveClass("border-transparent hover:scale-105 opacity-80 hover:opacity-100");
-  });
+  
+    const avatarButtons = screen.getAllByRole("button");
+    expect(avatarButtons[0]).toHaveClass("border-transparent hover:scale-105 opacity-80 hover:opacity-100");
+  });  
 });

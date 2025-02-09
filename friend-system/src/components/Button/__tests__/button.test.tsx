@@ -18,22 +18,17 @@ describe("Button Component", () => {
     expect(button).toHaveClass("custom-class");
   });
 
-  it("Should render the button with different variants", () => {
-    const variants = ["primary", "secondary", "sidebar", "danger"] as const;
-
-    variants.forEach((variant) => {
+  describe.each([
+    ["primary", "bg-[#7D00FF] text-white hover:brightness-110 shadow-md"],
+    ["secondary", "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153]"],
+    ["sidebar", "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153] text-left"],
+    ["danger", "bg-red-600 text-white hover:bg-red-700 shadow-md"],
+  ] as const)("Button Component Variants", (variant, expectedClass) => {
+    it(`Should render the button with ${variant} variant`, () => {
       render(<Button variant={variant}>Click me</Button>);
       const button = screen.getByRole("button", { name: /click me/i });
 
-      expect(button).toHaveClass(
-        variant === "primary"
-          ? "bg-[#7D00FF] text-white hover:brightness-110 shadow-md"
-          : variant === "secondary"
-          ? "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153]"
-          : variant === "sidebar"
-          ? "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153] text-left"
-          : "bg-red-600 text-white hover:bg-red-700 shadow-md"
-      );
+      expect(button).toHaveClass(expectedClass);
     });
   });
 
