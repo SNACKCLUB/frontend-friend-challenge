@@ -1,22 +1,21 @@
-import React from "react";
-
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "sidebar";
 }
 
-const Button: React.FC<ButtonProps> = ({ variant = "primary", className, ...props }) => {
+const Button = ({ variant = "primary", className, children, ...props }: ButtonProps) => {
   const baseStyles =
-    "w-full px-8 py-3 text-lg font-bold uppercase rounded-full transition-all shadow-md";
+    "py-3 px-4 rounded-lg text-lg font-semibold transition-all focus:outline-none";
+  
   const variants = {
-    primary: "bg-gradient-to-r from-[#7D00FF] to-[#D600FF] hover:brightness-125",
-    secondary: "bg-gradient-to-r from-[#00FF7F] to-[#00D6FF] hover:brightness-125",
+    primary: "bg-[#7D00FF] text-white hover:brightness-110 shadow-md",
+    secondary: "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153]",
+    sidebar: "bg-[#2D0A40] text-gray-300 hover:bg-[#3B1153] w-full text-left",
   };
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      {...props}
-    />
+    <button className={`${baseStyles} ${variants[variant]} ${className || ""}`} {...props}>
+      {children}
+    </button>
   );
 };
 

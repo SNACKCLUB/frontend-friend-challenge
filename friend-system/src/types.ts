@@ -2,11 +2,13 @@ export interface User {
   id: number;
   name: string;
   friends: string[];
+  avatar: string;
 }
 
 export interface Friend {
   id: number;
   name: string;
+  avatar: string;
 }
 
 export interface AuthContextType {
@@ -14,4 +16,10 @@ export interface AuthContextType {
   token: string | null;
   login: (name: string) => Promise<boolean>;
   logout: () => void;
+}
+
+export interface SidebarProps {
+  activeTab: "friends" | "requests" | "explore";
+  setActiveTab: (tab: "friends" | "requests" | "explore") => void;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
