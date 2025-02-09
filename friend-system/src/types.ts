@@ -15,3 +15,9 @@ export interface AuthContextType {
   login: (name: string) => Promise<boolean>;
   logout: () => void;
 }
+
+export interface SidebarProps {
+  activeTab: "friends" | "requests" | "explore";
+  setActiveTab: (tab: "friends" | "requests" | "explore") => void;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
