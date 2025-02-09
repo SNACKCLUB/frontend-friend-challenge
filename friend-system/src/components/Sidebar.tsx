@@ -4,6 +4,7 @@ import { fakeDB } from "../mock-api/fakeDatabase";
 interface SidebarProps {
   activeTab: "friends" | "requests" | "explore";
   setActiveTab: (tab: "friends" | "requests" | "explore") => void;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {

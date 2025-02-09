@@ -20,10 +20,10 @@ const Register = () => {
 
     const success = await registerUser(name, selectedAvatar);
     if (success) {
-      toast.success("✅ Account created successfully! Redirecting...");
+      toast.success("Account created successfully! Redirecting...");
       setTimeout(() => router.push("/login"), 2000);
     } else {
-      toast.error("❌ This name is already taken. Try another.");
+      toast.error("This name is already taken. Try another.");
     }
   };
 
