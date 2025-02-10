@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import AvatarSelector from "../components/AvatarSelector";
 import { fakeDB } from "../mock-api/fakeDatabase";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
@@ -14,12 +15,14 @@ const Register = () => {
   const router = useRouter();
 
   const handleRegister = async () => {
-    if (!name.trim() || !selectedAvatar) {
-      toast.warn("⚠️ Please enter a name and select an avatar.");
+    const sanitizedName = DOMPurify.sanitize(name.trim());
+
+    if (!sanitizedName || !selectedAvatar) {
+      toast.warn("Please enter a valid name and select an avatar.");
       return;
     }
 
-    const success = await registerUser(name, selectedAvatar);
+    const success = await registerUser(sanitizedName, selectedAvatar);
     if (success) {
       toast.success("Account created successfully! Redirecting...");
       setTimeout(() => router.push("/login"), 2000);
