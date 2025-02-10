@@ -1,4 +1,5 @@
 import { User } from "../types";
+import { sanitizeInput } from "../utils/sanitize";
 
 const avatars = [
   "/images/1.png",
@@ -32,9 +33,10 @@ export const fakeDB = {
   findUser: (name: string) => users.find(user => user.name.toLowerCase() === name.toLowerCase()),
 
   addUser: (name: string, avatar: string) => {
-    if (fakeDB.findUser(name)) return false;
+    const safeName = sanitizeInput(name);
+    if (fakeDB.findUser(safeName)) return false;
 
-    const newUser: User = { id: nextId++, name, friends: [], friendRequests: [], avatar };
+    const newUser: User = { id: nextId++, name: safeName, friends: [], friendRequests: [], avatar };
     users.push(newUser);
 
     if (typeof window !== "undefined") {
@@ -63,8 +65,11 @@ export const fakeDB = {
   getAvatars: () => avatars,
 
   sendFriendRequest: (from: string, to: string, updatePendingRequests?: () => void) => {
-    const sender = fakeDB.findUser(from);
-    const receiver = fakeDB.findUser(to);
+    const safeFrom = sanitizeInput(from);
+    const safeTo = sanitizeInput(to);
+
+    const sender = fakeDB.findUser(safeFrom);
+    const receiver = fakeDB.findUser(safeTo);
   
     if (!sender || !receiver) return false;
   
@@ -89,8 +94,11 @@ export const fakeDB = {
   },
 
   acceptFriendRequest: (userName: string, friendName: string, updatePendingRequests: () => void) => {
-    const user = fakeDB.findUser(userName);
-    const friend = fakeDB.findUser(friendName);
+    const safeUser = sanitizeInput(userName);
+    const safeFriend = sanitizeInput(friendName);
+
+    const user = fakeDB.findUser(safeUser);
+    const friend = fakeDB.findUser(safeFriend);
   
     if (!user || !friend) return false;
   
