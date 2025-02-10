@@ -1,60 +1,134 @@
-# Frontend Mid-level Challenge: Friend System
+# 📌 Friend Management System
 
-Welcome to the Frontend Mid-level Challenge! This repository contains a challenge designed to test your skills as a frontend developer. The challenge involves creating a friend system where users can manage friend requests, view their friend list, and receive notifications, all while adhering to best practices in software development.
+## 📖 Sobre o Projeto
+Este projeto é um sistema de gerenciamento de amizades onde os usuários podem criar uma conta, adicionar amigos, aceitar ou recusar solicitações de amizade e remover amigos. A autenticação é feita com JWT (mockado) e o armazenamento de dados é simulado com um banco de dados fake (`fakeDB`).
 
-## 📌 Objective
+O objetivo é demonstrar **boas práticas de desenvolvimento**, **testes automatizados**, **segurança** e **uso de Docker**.
 
-The goal of this challenge is to evaluate your ability to work as a frontend developer by developing a friend system where users can send friend requests, accept or decline invitations, and view their friend list.
+---
 
-## 🎯 Requirements
-### 📌 Main Features
-1. **Registration and Authentication**
-   - Users should be able to create an account and log in.
-   - Use authentication via JWT or OAuth2 (mocked).
+## 🛠 Tecnologias Utilizadas
 
-2. **Friend Management**
-   - Send friend requests.
-   - Accept or decline a request.
-   - List a user's friends.
-   - Remove a friend from the list.
+### 📌 **Frontend**
+- **React (Next.js)** - Framework para construção da interface do usuário.
+- **TypeScript** - Para garantir tipagem forte e segurança no código.
+- **Tailwind CSS** - Para estilização da interface de maneira eficiente.
+- **React Toastify** - Para exibir notificações ao usuário.
+- **Jest & Testing Library** - Para testes unitários.
 
-3. **Notifications and Feedback**
-   - The user should be notified when receiving a friend request.
-   - Show status (pending, accepted, declined).
+### 📌 **Backend (mockado)**
+- **fakeDB** - Simulação de um banco de dados para armazenar usuários e amigos.
+- **JWT mockado** - Geração de tokens de autenticação para simular login.
 
-### 📌 Technical Requirements
+### 📌 **Ferramentas e Práticas**
+- **Git Flow** - Fluxo de versionamento utilizando branches (`feature/`, `develop`, `main`).
+- **Docker** - Containerização para facilitar a execução do projeto.
+- **Helmet.js & CSRF Protection** - Para segurança contra XSS e CSRF.
 
-- Frontend: Use the frontend framework of your choice. We recommend **React (Next.js)**, but any modern frontend framework is acceptable.
-- Use mock or fake APIs to simulate backend interactions.
-- Automated tests (unit and/or integration).
-- Docker to facilitate execution.
+---
 
-## 🚀 Differentials (Not mandatory, but welcome)
+## 📌 Funcionalidades Principais
+### **📌 Registro e Autenticação**
+✅ Usuários podem criar uma conta e fazer login.
+✅ Autenticação utilizando JWT (mockado).
 
-- Use of **TypeScript**.
-- Implementation of real-time notifications.
+### **📌 Gerenciamento de Amizades**
+✅ Enviar solicitações de amizade.
+✅ Aceitar ou recusar pedidos.
+✅ Listar amigos de um usuário.
+✅ Remover amigos da lista.
 
-## 🔍 Evaluation Criteria
+### **📌 Notificações e Feedback**
+✅ O usuário recebe notificações ao receber uma solicitação de amizade.
+✅ Exibição do status da amizade (pendente, aceita, recusada).
 
-The code will be evaluated based on the following criteria:
+---
 
-✅ **Organization and Architecture** (best practices, clean code, documentation).  
-✅ **Performance and Scalability** (efficient code, optimizations).  
-✅ **Security** (protection against common attacks like XSS, CSRF).  
-✅ **Tests** (test coverage and use of best practices).  
-✅ **User Experience** (intuitive and responsive interface).  
+## 📌 Como Rodar o Projeto
+### 🐳 **Rodando com Docker**
+O projeto está **totalmente dockerizado** para facilitar a execução.
 
-## 📦 Delivery
+1️⃣ **Clone o repositório**
+```bash
+  git clone git@github.com:Kdulima/frontend-friend-challenge.git
+  cd frontend-friend-challenge
+  cd friend-system
+```
 
-1. Fork the project repository and submit a **Pull Request** once the implementation is completed.
-2. Document the setup in the **README.md** file (how to run the project locally with Docker, API endpoints, fake credentials, etc.).
-3. Ensure that your application runs locally with Docker, and provide instructions on how to do so in the README.
+2️⃣ **Suba o container Docker**
+```bash
+  docker-compose up --build -d
+```
 
-## 🕒 Estimated Time
+3️⃣ **Acesse a aplicação**
+```bash
+  http://localhost:3000
+```
 
-The challenge should be completed within **3 days**.
+---
 
-> ❗IMPORTANT  
-> If you are unable to complete the challenge within the estimated time, please submit your progress. The evaluation will be based on the criteria mentioned above.
+## 📌 Como Funciona a Aplicação
+### **Fluxo de Cadastro e Login**
+1. O usuário se cadastra escolhendo um nome e um avatar.
+2. O sistema gera um token JWT (mockado) e armazena no localStorage.
+3. O usuário é redirecionado para a tela de amigos.
 
-Good luck! 🚀
+### **Fluxo de Amizade**
+1. Usuário pode enviar solicitações de amizade para outros usuários.
+2. O destinatário pode **aceitar ou recusar** a solicitação.
+3. Quando aceita, o amigo aparece na lista de amigos do usuário.
+4. O usuário pode remover um amigo da lista se desejar.
+
+## 📌 Credenciais Mockadas
+
+O sistema já conta com usuários preexistentes para facilitar os testes. Eles podem ser visualizados diretamente no painel da aplicação.
+
+### 🔹 Usuários Disponíveis
+
+| Nome    | Amigos                                  | Solicitações Pendentes |
+|---------|-----------------------------------------|------------------------|
+| Carlos  | Cibele, Eduardo, Luisa, Gabriel        | Nenhuma                |
+| Cibele  | Carlos, Eduardo, Luisa, Gabriel        | Nenhuma                |
+| Eduardo | Carlos, Cibele, Luisa, Gabriel         | Nenhuma                |
+| Luisa   | Carlos, Cibele, Eduardo, Gabriel       | Nenhuma                |
+| Gabriel | Carlos                                 | Nenhuma                |
+
+### 🔹 Como Usar
+- Você pode selecionar qualquer um desses usuários para testar o envio e recebimento de **solicitações de amizade**.
+- O estado da amizade pode ser **aceito, recusado ou removido** a qualquer momento.
+- Para simular **novos cadastros**, basta registrar um novo usuário na tela de cadastro.
+
+---
+
+## 📌 Testes Automatizados
+O projeto conta com **testes unitários** para garantir a qualidade do código.
+
+### **📌 Tecnologias de Teste**
+- **Jest** - Para testes unitários.
+- **Testing Library** - Para testes de componentes e hooks.
+
+### **📌 Cobertura de Testes**
+✅ **Coverage total acima de 80%**.
+
+### **📌 Como Rodar os Testes**
+Para rodar todos os testes unitários e de integração:
+```bash
+  npm run test
+```
+
+---
+
+## 📌 Boas Práticas Seguidas
+- ✅ **Git Flow** - Cada feature foi desenvolvida em uma branch separada.
+- ✅ **Arquitetura Modular** - Componentes reutilizáveis e organizados.
+- ✅ **Clean code** - Código limpo e padronizado.
+- ✅ **Proteção contra XSS & CSRF** - Segurança implementada.
+- ✅ **Docker** - Execução do projeto de forma isolada e padronizada.
+
+---
+
+
+## 🚀 Desenvolvido por
+👨‍💻 Carlos Lima
+📌 Software Develop
+🔗 [LinkedIn](https://www.linkedin.com/in/carloslima90)
