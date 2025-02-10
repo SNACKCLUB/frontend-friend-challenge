@@ -1,8 +1,9 @@
+import React from "react";
 import { useRouter } from "next/router";
-import useAuth from "../hooks/useAuth";
-import { fakeDB } from "../mock-api/fakeDatabase";
-import Button from "./Button";
-import Badge from "./Badge";
+import useAuth from "../../hooks/useAuth";
+import { fakeDB } from "../../mock-api/fakeDatabase";
+import Button from "../Button";
+import Badge from "../Badge";
 
 interface SidebarProps {
   activeTab: "friends" | "requests" | "explore";
@@ -10,13 +11,21 @@ interface SidebarProps {
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const TABS = {
+  FRIENDS: "friends",
+  REQUESTS: "requests",
+  EXPLORE: "explore",
+} as const;
+
 const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) => {
   const { user, logout, pendingRequests, updatePendingRequests } = useAuth();
   const router = useRouter();
 
+  const closeSidebar = () => setIsSidebarOpen(false);
+
   const handleLogout = () => {
     logout();
-    setIsSidebarOpen(false);
+    closeSidebar();
     router.push("/login");
   };
 
@@ -37,41 +46,44 @@ const Sidebar = ({ activeTab, setActiveTab, setIsSidebarOpen }: SidebarProps) =>
 
       <nav className="w-full flex flex-col items-center gap-4">
         <Button
-          variant={activeTab === "friends" ? "primary" : "sidebar"}
+          variant={activeTab === TABS.FRIENDS ? "primary" : "sidebar"}
           onClick={() => {
-            setActiveTab("friends");
-            setIsSidebarOpen(false);
+            setActiveTab(TABS.FRIENDS);
+            closeSidebar();
           }}
+          aria-label="Friends"
         >
           Friends
         </Button>
 
         <Button
-          variant={activeTab === "requests" ? "primary" : "sidebar"}
+          variant={activeTab === TABS.REQUESTS ? "primary" : "sidebar"}
           onClick={() => {
-            setActiveTab("requests");
-            setIsSidebarOpen(false);
+            setActiveTab(TABS.REQUESTS);
+            closeSidebar();
             updatePendingRequests();
           }}
           className="relative"
+          aria-label="Requests"
         >
           Requests
           {pendingRequests > 0 && <Badge count={pendingRequests} />}
         </Button>
 
         <Button
-          variant={activeTab === "explore" ? "primary" : "sidebar"}
+          variant={activeTab === TABS.EXPLORE ? "primary" : "sidebar"}
           onClick={() => {
-            setActiveTab("explore");
-            setIsSidebarOpen(false);
+            setActiveTab(TABS.EXPLORE);
+            closeSidebar();
           }}
+          aria-label="Explore"
         >
           Explore
         </Button>
       </nav>
 
       <div className="mt-auto w-full flex justify-center pb-6">
-        <Button variant="danger" onClick={handleLogout}>
+        <Button variant="danger" onClick={handleLogout} aria-label="Logout">
           Logout
         </Button>
       </div>

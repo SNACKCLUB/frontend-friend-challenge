@@ -1,10 +1,11 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuth from "../hooks/useAuth";
-import { User, Friend } from "../types";
-import { fakeDB } from "../mock-api/fakeDatabase";
-import FriendCard from "../components/FriendCard";
+import useAuth from "../../hooks/useAuth";
+import { User, Friend } from "../../types";
+import { fakeDB } from "../../mock-api/fakeDatabase";
+import FriendCard from "../FriendCard";
 
 const Explore = () => {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ const Explore = () => {
     if (!currentUser) return;
 
     setFriends(currentUser.friends);
-    setPendingRequests(currentUser.friendRequests); // ✅ Atualiza os pedidos pendentes
+    setPendingRequests(currentUser.friendRequests);
 
     const allUsers: User[] = fakeDB
       .getUsers()
@@ -40,7 +41,7 @@ const Explore = () => {
     const success = fakeDB.sendFriendRequest(user, targetUser);
     if (success) {
       toast.success(`Friend request sent to ${targetUser}! 🎉`);
-      setPendingRequests([...pendingRequests, targetUser]); // ✅ Atualiza a lista de pendingRequests
+      setPendingRequests([...pendingRequests, targetUser]);
     } else {
       toast.warn("You already sent a request to this user.");
     }

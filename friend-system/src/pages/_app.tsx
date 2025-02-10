@@ -1,3 +1,4 @@
+import React from "react";
 import type { AppProps } from "next/app";
 import { AuthProvider } from "../context/authContext";
 import { ToastContainer } from "react-toastify";

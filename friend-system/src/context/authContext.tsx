@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { loginUser } from "../services/authService";
 import { AuthContextType } from "../types";
@@ -21,12 +22,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };  
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-
-    if (storedUser && storedToken) {
-      setUser(storedUser);
-      setToken(storedToken);
+    try {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+  
+      if (storedUser && storedToken) {
+        setUser(storedUser);
+        setToken(storedToken);
+      }
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
     }
   }, []);
 

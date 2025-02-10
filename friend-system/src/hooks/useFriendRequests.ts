@@ -10,18 +10,22 @@ const useFriendRequests = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     const fetchRequests = () => {
+      setLoading(true);
       try {
         const pendingRequests: string[] = fakeDB.getFriendRequests(user) || [];
 
         const formattedRequests: Friend[] = pendingRequests
           .map((requestName: string) => {
             const friend = fakeDB.findUser(requestName);
-            return friend ? { id: friend.id!, name: friend.name, avatar: friend.avatar } : null;
+            return friend ? { id: friend.id, name: friend.name, avatar: friend.avatar } : null;
           })
-          .filter((friend): friend is Friend => friend !== null);
+          .filter(Boolean) as Friend[];
 
         setRequests(formattedRequests);
       } catch (err) {
@@ -47,8 +51,8 @@ const useFriendRequests = () => {
   const declineRequest = (friendName: string) => {
     if (!user) return;
 
-    const friend = requests.find((request) => request.name === friendName);
-    if (!friend) return;
+    const friendExists = requests.some((request) => request.name === friendName);
+    if (!friendExists) return;
 
     fakeDB.declineFriendRequest(user, friendName, updatePendingRequests);
     updatePendingRequests();

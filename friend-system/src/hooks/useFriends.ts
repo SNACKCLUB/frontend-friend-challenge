@@ -10,13 +10,16 @@ const useFriends = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     const fetchFriends = () => {
       try {
         const foundUser = fakeDB.findUser(user);
         if (!foundUser) throw new Error("User not found");
-    
+
         const friendList = foundUser.friends
           .map(friendName => fakeDB.findUser(friendName))
           .filter(Boolean)
@@ -24,38 +27,30 @@ const useFriends = () => {
             ...friend!,
             avatar: friend!.avatar
           })) as Friend[];
-    
+
         setFriends(friendList);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }
-    };    
+    };
 
     fetchFriends();
   }, [user]);
 
   const removeFriend = (friendId: number) => {
     if (!user) return;
-  
+
     const success = fakeDB.removeFriend(user, friendId);
     
     if (success) {
       const foundUser = fakeDB.findUser(user);
       if (foundUser) {
-        const updatedFriends = foundUser.friends
-          .map(friendName => fakeDB.findUser(friendName))
-          .filter(Boolean)
-          .map(friend => ({
-            ...friend!,
-            avatar: friend!.avatar
-          })) as Friend[];
-  
-        setFriends(updatedFriends);
+        setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
       }
     }
-  };  
+  };
 
   return { friends, loading, error, removeFriend };
 };
