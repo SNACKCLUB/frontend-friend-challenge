@@ -2,10 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuth from "../hooks/useAuth";
-import { User, Friend } from "../types";
-import { fakeDB } from "../mock-api/fakeDatabase";
-import FriendCard from "./FriendCard";
+import useAuth from "../../hooks/useAuth";
+import { User, Friend } from "../../types";
+import { fakeDB } from "../../mock-api/fakeDatabase";
+import FriendCard from "../FriendCard";
 
 const Explore = () => {
   const { user } = useAuth();
